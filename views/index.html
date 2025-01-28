@@ -8,12 +8,11 @@
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
 </head>
 <body>
-    <!-- .Count means, whatever object is passed, get its property called Count -->
-    <div id="count">
-        {{ template "count" . }}
-    </div>
-    <button hx-post="/count" hx-target="#count">Count</button>    
-    
+
+    {{ template "form" . }}
+    {{ template "display" . }}
+
+</body> 
 </html>
 {{ end }}
 
@@ -21,3 +20,20 @@
 {{ block "count" .}}
     Count {{ .Count }} 
 {{ end }}   
+
+{{ block "form" . }}
+    <form hx-post="/contacts" hx-target="#display">
+        Name: <input type="text" name="name"/>
+        Email: <input type="text" name="email"/>
+        <button type="submit">Submit</button>
+    </form>
+{{ end }}
+{{ block "display" . }}
+    <div style="display: flex; flex-direction: column;" id="display">
+    {{ range .Contacts }}
+        <div>
+            Name: <span>{{ .Name }}</span>
+            Email: <span>{{ .Email }}</span>
+        </div>
+    {{ end }}
+{{ end }}
