@@ -1,0 +1,23 @@
+{{ define "contact" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Contact.Name }} - Contact Details</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <h1>{{ .Contact.Name }}'s Contact Details</h1>
+    
+    <p>Name: {{ .Contact.Name }}</p>
+    <p>Email: {{ .Contact.Email }}</p>
+    <p>Role: {{ .Role.RoleName }}</p>
+    <img src="{{ .Role.Icon }}" alt="Role Icon" width="50">
+    
+    <a href="/">Back to Contact List</a>
+
+</body>
+</html>
+{{ end }}

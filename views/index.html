@@ -34,9 +34,10 @@
     <div id="contacts">
         {{ range .Contacts }}
             <div>
-                <p>Name: {{ .Name }}</p>
+                <p>Name: <a href="/contact/{{ .ID }}">{{ .Name }}</a></p>
                 <p>Email: {{ .Email }}</p>
                 <p>Role: {{ (index $.Roles (sub .RoleID 1)).RoleName }}</p>
+                <img src="{{ (index $.Roles (sub .RoleID 1)).Icon }}" alt="Role Icon" width="30">
             </div>
         {{ end }}
     </div>
@@ -44,6 +45,7 @@
 </body>
 </html>
 {{ end }}
+
 
 
 
