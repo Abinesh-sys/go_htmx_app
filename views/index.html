@@ -1,3 +1,4 @@
+{{ define "index" }}
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,30 +11,32 @@
 <body>
 
     {{ template "form" . }}
-    {{ template "display" . }}
+    <div id="display">
+        {{ template "display" . }}
+    </div>
 
 </body> 
 </html>
 {{ end }}
 
 
-{{ block "count" .}}
-    Count {{ .Count }} 
+{{ define "form" }}
+<form hx-post="/contacts" hx-target="#display" hx-swap="beforeend">
+    Name: <input type="text" name="name" required/>
+    Email: <input type="email" name="email" required/>
+    <button type="submit">Submit</button>
+</form>
 {{ end }}   
 
-{{ block "form" . }}
-    <form hx-post="/contacts" hx-target="#display">
-        Name: <input type="text" name="name"/>
-        Email: <input type="text" name="email"/>
-        <button type="submit">Submit</button>
-    </form>
-{{ end }}
-{{ block "display" . }}
-    <div style="display: flex; flex-direction: column;" id="display">
+{{ define "display" }}
     {{ range .Contacts }}
-        <div>
-            Name: <span>{{ .Name }}</span>
-            Email: <span>{{ .Email }}</span>
-        </div>
+        {{ template "newentry" . }}
     {{ end }}
+{{ end }}
+
+{{ define "newentry" }}
+    <div>
+        Name: <span>{{ .Name }}</span>
+        Email: <span>{{ .Email }}</span>
+    </div>
 {{ end }}
