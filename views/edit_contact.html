@@ -1,0 +1,35 @@
+{{ define "edit_contact" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Contact</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <h1>Edit Contact</h1>
+    
+    <!-- Edit Contact Form -->
+    <form action="/update-contact" method="POST">
+        <input type="hidden" name="name" value="{{ .Contact.Name }}">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ .Contact.Email }}" required>
+        
+        <label for="role">Role:</label>
+        <select id="role" name="role" required>
+            {{ range .Roles }}
+                <option value="{{ .ID }}" {{ if eq .ID .Contact.RoleID }}selected{{ end }}>{{ .RoleName }}</option>
+            {{ end }}
+        </select>
+        
+        <button type="submit">Update</button>
+    </form>
+
+    <a href="/">Back to Contact List</a>
+
+</body>
+</html>
+{{ end }}

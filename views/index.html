@@ -38,6 +38,9 @@
                 <p>Email: {{ .Email }}</p>
                 <p>Role: {{ (index $.Roles (sub .RoleID 1)).RoleName }}</p>
                 <img src="{{ .ProfileImage }}" alt="Profile Image" width="30"> 
+                <a href="/contact/{{ .Name | lower }}">View</a> | 
+                <a href="/edit-contact/{{ .Name | lower }}">Edit</a> | 
+                <a href="/delete-contact/{{ .Name | lower }}">Delete</a>
             </div>
         {{ end }}
     </div>

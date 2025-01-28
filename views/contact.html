@@ -8,11 +8,11 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-    
+
+    <h1>{{ .Contact.Name }}'s Contact Details</h1>
+
     <h3>Profile Image</h3>
     <img src="{{ .Contact.ProfileImage }}" alt="Profile Image" width="100">
-    
-    <h1>{{ .Contact.Name }}'s Contact Details</h1>
     
     <p>Name: {{ .Contact.Name }}</p>
     <p>Email: {{ .Contact.Email }}</p>

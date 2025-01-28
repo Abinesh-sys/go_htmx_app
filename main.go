@@ -5,11 +5,11 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
-
 
 // Templates struct to handle rendering
 type Templates struct {
@@ -24,6 +24,7 @@ func newTemplate() *Templates {
 	// Define custom template functions
 	funcMap := template.FuncMap{
 		"sub": func(a, b int) int { return a - b },
+		"lower": func(s string) string { return strings.ToLower(s) },
 	}
 
 	// Parse templates with custom functions
@@ -33,10 +34,10 @@ func newTemplate() *Templates {
 }
 
 type Contact struct {
-	ID     int
-	Name   string
-	Email  string
-	RoleID int
+	ID           int
+	Name         string
+	Email        string
+	RoleID       int
 	ProfileImage string
 }
 
@@ -55,7 +56,7 @@ func newData() *Data {
 	return &Data{
 		Contacts: []Contact{
 			{Name: "Abinesh", Email: "Abinesh@gmail.com", RoleID: 1, ProfileImage: "/icons/abinesh.jpeg"},
-            {Name: "Bobby", Email: "Bobby@gmail.com", RoleID: 2, ProfileImage: "/icons/bobby.jpg"},
+			{Name: "Bobby", Email: "Bobby@gmail.com", RoleID: 2, ProfileImage: "/icons/bobby.jpg"},
 		},
 		Roles: []Role{
 			{ID: 1, RoleName: "Admin", Icon: "/icons/admin.png"},
@@ -137,7 +138,70 @@ func main() {
 	e.Static("/css", "views/css")
 	e.Static("/icons", "views/icons")
 
-	// Start server
+	// Route to delete a contact
+	e.GET("/delete-contact/:name", func(c echo.Context) error {
+		name := c.Param("name")
+
+		// Find and delete the contact
+		for i, contact := range data.Contacts {
+			if contact.Name == name {
+				data.Contacts = append(data.Contacts[:i], data.Contacts[i+1:]...)
+				break
+			}
+		}
+
+		// Redirect back to the contact list
+		return c.Redirect(http.StatusSeeOther, "/")
+	})
+
+	// Route to edit a contact
+	e.GET("/edit-contact/:name", func(c echo.Context) error {
+		name := c.Param("name")
+
+		// Find the contact to edit
+		var contactToEdit *Contact
+		for _, contact := range data.Contacts {
+			if contact.Name == name {
+				contactToEdit = &contact
+				break
+			}
+		}
+
+		if contactToEdit == nil {
+			return c.JSON(http.StatusNotFound, map[string]string{"error": "Contact not found"})
+		}
+
+		// Render the edit contact form
+		return c.Render(http.StatusOK, "edit_contact", map[string]interface{}{
+			"Contact": contactToEdit,
+			"Roles":   data.Roles,
+		})
+	})
+
+	// Route to update a contact
+	e.POST("/update-contact", func(c echo.Context) error {
+		name := c.FormValue("name")
+		email := c.FormValue("email")
+		roleIDStr := c.FormValue("role")
+		roleID, err := strconv.Atoi(roleIDStr)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid role ID"})
+		}
+
+		// Find and update the contact
+		for i, contact := range data.Contacts {
+			if contact.Name == name {
+				data.Contacts[i] = Contact{Name: name, Email: email, RoleID: roleID}
+				break
+			}
+		}
+
+		// Redirect to the contact list
+		return c.Redirect(http.StatusSeeOther, "/")
+	})
+
+	// Start the server
 	e.Logger.Fatal(e.Start(":42069"))
 }
+
 
