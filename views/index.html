@@ -4,10 +4,20 @@
     <title>Index</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="views/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
 </head>
 <body>
     <!-- .Count means, whatever object is passed, get its property called Count -->
-    Count {{ .Count }} 
+    <div id="count">
+        {{ template "count" . }}
+    </div>
+    <button hx-post="/count" hx-target="#count">Count</button>    
+    
 </html>
 {{ end }}
+
+
+{{ block "count" .}}
+    Count {{ .Count }} 
+{{ end }}   
