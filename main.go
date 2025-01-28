@@ -37,6 +37,7 @@ type Contact struct {
 	Name   string
 	Email  string
 	RoleID int
+	ProfileImage string
 }
 
 type Role struct {
@@ -53,8 +54,8 @@ type Data struct {
 func newData() *Data {
 	return &Data{
 		Contacts: []Contact{
-			{ID: 1, Name: "Abinesh", Email: "Abinesh@gmail.com", RoleID: 1},
-			{ID: 2, Name: "Bobby", Email: "Bobby@gmail.com", RoleID: 2},
+			{Name: "Abinesh", Email: "Abinesh@gmail.com", RoleID: 1, ProfileImage: "/icons/abinesh.jpeg"},
+            {Name: "Bobby", Email: "Bobby@gmail.com", RoleID: 2, ProfileImage: "/icons/bobby.jpg"},
 		},
 		Roles: []Role{
 			{ID: 1, RoleName: "Admin", Icon: "/icons/admin.png"},

@@ -8,13 +8,18 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-
+    
+    <h3>Profile Image</h3>
+    <img src="{{ .Contact.ProfileImage }}" alt="Profile Image" width="100">
+    
     <h1>{{ .Contact.Name }}'s Contact Details</h1>
     
     <p>Name: {{ .Contact.Name }}</p>
     <p>Email: {{ .Contact.Email }}</p>
     <p>Role: {{ .Role.RoleName }}</p>
     <img src="{{ .Role.Icon }}" alt="Role Icon" width="50">
+
+    
     
     <a href="/">Back to Contact List</a>
 
