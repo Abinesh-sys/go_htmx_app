@@ -1,24 +1,41 @@
 {{ define "index" }}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Index</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/views/css/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact and Role Grid</title>
+    <link href="/css/style.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
 </head>
 <body>
 
+    <h1>Contact Form</h1>
     {{ template "form" . }}
+    
     <div id="display">
+        <h2>Contact Entries</h2>
         {{ template "display" . }}
     </div>
 
-</body> 
+    <hr>
+
+    <h1>Role Grid</h1>
+    <div class="grid-container">
+        {{ range .Roles }}
+        <div class="grid-item">
+            <img src="{{ .Icon }}" alt="{{ .RoleName }}" class="icon">
+            <div class="role-info">
+                <p>ID: {{ .ID }}</p>
+                <p>Role: {{ .RoleName }}</p>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+
+</body>
 </html>
 {{ end }}
-
 
 {{ define "form" }}
 <form hx-post="/contacts" hx-target="#display" hx-swap="beforeend">
@@ -26,7 +43,7 @@
     Email: <input type="email" name="email" required/>
     <button type="submit">Submit</button>
 </form>
-{{ end }}   
+{{ end }}
 
 {{ define "display" }}
     {{ range .Contacts }}
